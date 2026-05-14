@@ -1,0 +1,552 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #f5f0e8;
+    color: #2c3e2d;
+}
+
+
+.header {
+    display: none;
+}
+
+.sidebar-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #f5f0e8;
+    background: #2c4a2e;
+    padding: 14px 16px;
+    margin: -16px -16px 16px -16px;
+    /* 贴边显示 */
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* 左侧配置区 */
+.sidebar {
+    width: 340px;
+    background: #eee8d8;
+    border-right: 1px solid #c8b98a;
+    padding: 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.section {
+    margin-bottom: 24px;
+}
+
+.section h3 {
+    color: #2c4a2e;
+    padding: 4px 0 4px 10px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    border-left: 3px solid #2c4a2e;
+}
+
+.section label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin: 8px 0 2px;
+}
+
+.sidebar {
+    background-color: rgba(238, 232, 216, 0.5);
+    /* 原来的颜色加透明度 */
+}
+
+.sidebar input[type="text"],
+.sidebar input[type="password"],
+.sidebar textarea {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #c8b98a;
+    border-radius: 4px;
+    background: #faf7f0;
+    font-size: 13px;
+    color: #2c3e2d;
+}
+
+.sidebar input[type="range"] {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.sidebar input[type="file"] {
+    font-size: 14px;
+}
+
+.sidebar button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 7px;
+    background: #2c4a2e;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.sidebar button:hover {
+    background: #3d6b40;
+}
+
+/* 术语列表 */
+#term_list {
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.term-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 6px;
+    margin-bottom: 4px;
+    background: #faf7f0;
+    border: 1px solid #c8b98a;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.term-item button {
+    width: auto;
+    margin: 0;
+    padding: 2px 8px;
+    background: #a04040;
+    font-size: 11px;
+}
+
+.term-item button:hover {
+    background: #c05050;
+}
+
+/* 右侧翻译区 */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.direction-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.direction-bar select {
+    padding: 7px 12px;
+    border: 1px solid #c8b98a;
+    border-radius: 4px;
+    background: #faf7f0;
+    font-size: 14px;
+    color: #2c3e2d;
+}
+
+#translate_btn {
+    padding: 7px 28px;
+    background: #2c4a2e;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+#translate_btn:hover {
+    background: #3d6b40;
+}
+
+#translate_btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.text-area-row {
+    display: flex;
+    gap: 12px;
+    min-height: 260px;
+    flex-shrink: 0;
+    /* 防压缩 */
+}
+
+.text-area-row textarea {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #c8b98a;
+    border-radius: 6px;
+    background: #faf7f0;
+    font-size: 14px;
+    color: #2c3e2d;
+    resize: none;
+    line-height: 1.7;
+}
+
+/* 输出区域 */
+.output-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.output-display {
+    flex: 1;
+    padding: 12px;
+    padding-bottom: 36px;
+    border: 1px solid #c8b98a;
+    border-radius: 6px;
+    background: #faf7f0;
+    font-size: 14px;
+    color: #2c3e2d;
+    line-height: 1.7;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 200px;
+}
+
+.output-display:empty::before {
+    content: attr(placeholder);
+    color: #aaa;
+}
+
+/* 术语高亮样式 */
+.output-display .highlight {
+    background: #d4edda;
+    color: #1a5c2a;
+    border-radius: 3px;
+    padding: 0 3px;
+    font-weight: bold;
+    cursor: help;
+    border-bottom: 1px dashed #2c4a2e;
+}
+
+/* 复制按钮 */
+.copy-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    padding: 4px 12px;
+    background: #2c4a2e;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.copy-btn:hover {
+    background: #3d6b40;
+}
+
+/* 命中术语 */
+.hits-box {
+    padding: 8px 12px;
+    background: #eef5ee;
+    border: 1px solid #a8c8a8;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/* 翻译历史 */
+.history-section {
+    border-top: 1px solid #c8b98a;
+    padding-top: 12px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.history-header h3 {
+    color: #2c4a2e;
+    font-size: 14px;
+}
+
+.clear-btn {
+    padding: 4px 12px;
+    background: #a04040;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.clear-btn:hover {
+    background: #c05050;
+}
+
+.history-item {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: #faf7f0;
+    border: 1px solid #c8b98a;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.history-item:hover {
+    background: #eee8d8;
+}
+
+.history-item .history-time {
+    font-size: 11px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.history-item .history-preview {
+    font-size: 13px;
+    color: #2c3e2d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-item .history-translation {
+    font-size: 12px;
+    color: #666;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.history-delete-btn {
+    padding: 2px 8px;
+    background: #a04040;
+    color: #f5f0e8;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.history-delete-btn:hover {
+    background: #c05050;
+}
+
+/* ===== 文件翻译区域 ===== */
+.file-translate-section {
+    border-top: 1px solid #c8b98a;
+    padding-top: 12px;
+}
+
+/* 上传区域 */
+.file-upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 16px;
+    border: 2px dashed #c8b98a;
+    border-radius: 8px;
+    background: #faf7f0;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 120px;
+    max-width: 500px;
+    /* 限制最大宽度 */
+    min-height: 100px;
+    /* 高度也适当收小 */
+}
+
+.file-upload-area:hover {
+    background: #eee8d8;
+    border-color: #2c4a2e;
+}
+
+/* 拖拽悬停时高亮 */
+.file-upload-area.dragover {
+    background: #d4edda;
+    border-color: #2c4a2e;
+}
+
+.upload-main-text {
+    font-size: 15px;
+    color: #2c4a2e;
+    font-weight: bold;
+}
+
+.upload-sub-text {
+    font-size: 12px;
+    color: #999;
+}
+
+.upload-file-name {
+    font-size: 13px;
+    color: #2c4a2e;
+    background: #d4edda;
+    padding: 3px 10px;
+    border-radius: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 进度日志区域 */
+.file-log-area {
+    margin-top: 10px;
+    padding: 10px 12px;
+    background: #f5f0e8;
+    border: 1px solid #c8b98a;
+    border-radius: 6px;
+}
+
+/* 加载进度条 */
+.progress-bar-wrap {
+    width: 100%;
+    height: 6px;
+    background: #e0d8c8;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    width: 0%;
+    background: #2c4a2e;
+    border-radius: 3px;
+    /* 动画：翻译中无限循环滚动 */
+    transition: width 0.3s;
+}
+
+/* 加载中动画样式 */
+.progress-bar-inner.loading {
+    width: 100%;
+    background: linear-gradient(90deg, #f5f0e8 0%, #2c4a2e 50%, #f5f0e8 100%);
+    background-size: 200% 100%;
+    animation: progress-slide 1.5s infinite linear;
+}
+
+@keyframes progress-slide {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 日志文字 */
+.file-log-text {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.8;
+}
+
+/* 结果提示 */
+.file-result-text {
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 6px;
+}
+
+.file-result-text.success {
+    color: #2c4a2e;
+}
+
+.file-result-text.error {
+    color: #a04040;
+}
+
+/* 按钮行 */
+.file-btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-start;
+}
+
+.file-action-btn {
+    flex: none;
+    padding: 9px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+/* 翻译按钮 */
+.translate-btn {
+    background: #2c4a2e;
+    color: #f5f0e8;
+}
+
+.translate-btn:hover {
+    background: #3d6b40;
+}
+
+.translate-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+/* 下载按钮 */
+.download-btn {
+    background: #f5f0e8;
+    color: #2c4a2e;
+    border: 1px solid #2c4a2e;
+}
+
+.download-btn:hover:not(:disabled) {
+    background: #eee8d8;
+}
+
+/* 下载按钮禁用时 */
+.download-btn:disabled {
+    background: #f5f0e8;
+    color: #bbb;
+    border-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* 下载按钮激活时 */
+.download-btn.active {
+    background: #2c4a2e;
+    color: #f5f0e8;
+    border-color: #2c4a2e;
+}
+
+.download-btn.active:hover {
+    background: #3d6b40;
+}
